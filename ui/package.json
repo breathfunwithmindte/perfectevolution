@@ -14,6 +14,7 @@
     "draft-js-export-markdown": "^1.4.0",
     "draft-js-import-html": "^1.4.1",
     "draft-js-plugins-editor": "^3.0.0",
+    "firebase": "^7.15.3",
     "highlight.js": "^9.16.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

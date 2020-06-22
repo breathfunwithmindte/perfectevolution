@@ -29,12 +29,12 @@
 .SinglePost_Container__LIGHT aside{
    
    background-color: #bcd9ea;
-   width: 44%;
+   width: 40%;
    display: flex;
    justify-content: flex-end;
    flex-direction: column;
    height: 95%;
-   margin: 0 1rem;
+   margin: 0 1.5rem;
    -webkit-box-shadow: 0 4px 10px -6px rgba(0, 0, 0, 0.658);
    -moz-box-shadow: 0 4px 10px -6px rgba(0, 0, 0, 0.658);
       box-shadow: 0 4px 10px -6px rgba(0, 0, 0, 0.658);
@@ -91,11 +91,6 @@
    overflow-x: hidden;
 }
 
-.singlePost_comments{
-   float: right;
-   height: 100vh;
-}
-
 .create_comment_forPost{
    overflow: hidden;
    height: 14vh;
@@ -104,4 +99,15 @@
    background: rgba(0, 0, 0, 0.5);
    bottom: 0;
    left: 0;
+}
+
+.sendbutton{
+   background-color: rgb(211, 159, 159);
+   border: none;
+   margin: 1rem 5%;
+   width: 90%;
+}
+
+.sendbutton:hover{
+   background-color: blue;
 }

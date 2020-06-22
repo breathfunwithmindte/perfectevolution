@@ -3,23 +3,22 @@ import "./singlepage.css";
 import socket from '../socket';
 import { AuthContext } from '../Context/AuthContext';
 import { themeContext } from '../Context/ThemeContext';
-import { CommentsP } from '../Pages/ExportsFolder';
 import NavBarSinglePage from '../NavBar/NavBarSinglePage';
 import CreateComment from './CreateComment';
 import SinglePostContent from './SinglePostContent';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import CommentsP from '../Comments/CommentsP/CommentsP'
 
 
 function SinglePost(props) {
-   const [singlePost, setSinglePost] = React.useState();
+   const [singlePost, setSinglePost] = React.useState(undefined);
    const [loading, setLoading] = React.useState(true);
    const { user } = React.useContext( AuthContext );
    const { theme } = React.useContext( themeContext );
    const [profile, setProfile] = React.useState({});
 
-   const likes = 43;
-
-   const id = props.match.params.id
+   const id = props.match.params.id;
+   console.log(singlePost)
 
    React.useEffect(() => {
       async function Initialisation() {
@@ -51,7 +50,7 @@ function SinglePost(props) {
          }
       }
       getProfile_forSinglePost();
-   })
+   },[id])
 
 if(singlePost === undefined) return <LinearProgress color="secondary" />
   else if(theme === undefined) {
@@ -64,13 +63,10 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
             </div>
             <div>
                <div>
-                  title place
-               </div>
-               <div>
-                  Comments will be here
+                  <CommentsP postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
                </div>
                <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
+                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
                </div>
             </div>
          </div>
@@ -91,10 +87,10 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
                   title place
                </div>
                <div>
-                  Comments will be here
+                  <CommentsP postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
                </div>
                <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
+                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
                </div>
             </div>
          </div>
@@ -109,7 +105,7 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
                   <div>
                      <span>LK</span>
                      <span>DL</span>
-                     <span>({likes})</span>
+                     <span>({5})</span>
                   </div>
                   <p>{Date.now()}</p>
                </section>
@@ -130,7 +126,10 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
                <NavBarSinglePage/>
 
                <section className="singlePost_comments">
-                  
+                  <div style={{overflowY:"scroll"}}>
+                    <CommentsP style={{overflowY:"scroll"}} postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
+                  </div>
+                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
                </section>   
             </aside>
          </div>
@@ -151,7 +150,7 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
                   title place
                </div>
                <div>
-                  Comments will be here
+                  <CommentsP postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
                </div>
                <div className="create_comment_forPost">
                   <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
@@ -163,4 +162,4 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
 
 }
 
-export default SinglePost
+export default React.memo(SinglePost);

@@ -178,16 +178,28 @@ io.on('connection', (socket)=>{
 
     socket.on("create_commentP", async ({postID, authID, profile, content, Writter}) => {
         try{
-            let newComment = new CommentsPost({post: postID, auth: authID, authProfile: profile, content, Writter});
+            let newComment = new CommentsPost({post: postID, auth: authID, authProfile: profile, content, writter: Writter});
             let createComment = await newComment.save();
             let find_again_comments = await CommentsPost.find({"post": postID});
-            socket.emit(`all_commentsPost_for_${postID}`, {commentsPost: find_again_comments});
+            socket.emit(`all_commentsPost_for_${postID}`, {commentSERVER: find_again_comments, error: "no error"});
 
         }catch(err){
-            //console.log(err)
-            socket.emit(`all_commentsPost_for_${postID}`)
+            console.log(err)
+            socket.emit(`all_commentsPost_for_${postID}`, {error: "smth went wrong"})
         }
     })
+
+    socket.on("getComments", async ({postID}) => {
+        try{
+            let findComments_operation = await CommentsPost.find({"post": postID});
+            socket.emit(`all_commentsPost_for_${postID}`, {commentSERVER: findComments_operation, error: "no error"})
+        }catch(err){
+            console.log(err);
+            socket.emit(`all_commentsPost_for_${postID}`, {error: "smth went wrong"})
+        }
+    })
+
+
 
    
 
