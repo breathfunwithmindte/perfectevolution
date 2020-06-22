@@ -216,7 +216,7 @@ class QuillEditor extends React.Component {
                     
 
                 </div>
-                <ReactQuill style={{backgroundColor: "white", maxHeight: "16vh", overflowY: "scroll", minHeight: "auto", padding: "0.5vw"}}
+                <ReactQuill style={{backgroundColor: "white", maxHeight: "16vh", overflowY: "auto", minHeight: "auto", padding: "0.5vw"}}
                     ref={(el) => { this.reactQuillRef = el }}
                     theme={'snow'}
                     onChange={this.handleChange}

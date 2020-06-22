@@ -4,13 +4,24 @@ import "../Pages/Posts/posts.css";
 import socket from '../socket';
 
 function CreateComment(props) {
-   const [content, setContent] = React.useState("")
+   const [content, setContent] = React.useState("");
 
    const onEditorChange = (value) => setContent(value);
 
    const handleSubmit = async () => {
+      let authID = props.authID;
+      let postID = props.postID;
+      let profile = props.profile;
+      let Writter = props.Writter;
       try{
-         let sendReqServer_forCreateComment = await socket.emit("create_commentP", {})
+         let sendReqServer_forCreateComment = await socket.emit("create_commentP", {authID, postID, Writter, profile, content});
+         socket.on(`all_commentsPost_for_${postID}`, ({error}) => {
+            if(error === "smth went wrong"){
+               alert("smth went wrong with publishing your comment to this post. Perfectevolution team is working hard to fix the problem as soon as this is possible, refresh the page or try again later.")
+            } else {
+               setContent("")
+            }
+         })
 
       }catch(err){
          //console.log(err)
@@ -20,6 +31,7 @@ function CreateComment(props) {
    return (
       <div style={{height: "100%"}}>
          <QuillEditorP onEditorChange={onEditorChange} />
+         <button onClick={handleSubmit}>ff</button>
       </div>
    )
 }
