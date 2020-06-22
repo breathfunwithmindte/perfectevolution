@@ -1,0 +1,38 @@
+
+.navbarStart_container
+{
+    left: 0;
+    top: 0;
+    position: fixed;
+    background-color: aquamarine;
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    min-height: 3vh;
+    height: 1.6vw;
+    overflow: hidden;
+    align-items: center;
+}
+
+.NavBarSinglePage_container{
+    position: fixed;
+    top: 1vh;
+    right: 1vw;
+    padding: 1vw;
+    display: flex;
+    background-color: #333;
+    border-radius: 1vw;
+}
+.NavBarSinglePage_button{
+    background-color: goldenrod;
+    border-style: none;
+    border-radius: 50%;
+    padding: 0.3vw;
+    color: white;
+    font-size: 1vw;
+    letter-spacing: 0.5vw;
+}
+.NavBarSinglePage_button:hover{
+    background-color: green;
+}
+

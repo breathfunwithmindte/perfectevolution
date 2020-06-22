@@ -31,8 +31,7 @@ const UserSchema = new mongoose.Schema({
 
     Online: {type: Boolean, default: false},
 
-    BackgroundColor: {type: String, required: true, default: '#141414'},
-    ThemeMode: {type: String, required: true, enum: ["dark", "light"], default: "dark"},
+    ThemeMode: {type: String, required: true, enum: ["dark", "light", "black"], default: "dark"},
 
     PerfecTInfo: {
         firstname: {type: String, required: true, default: "BEST NAME"},
@@ -48,33 +47,12 @@ const UserSchema = new mongoose.Schema({
         MainChampion: {type: String, required: true, default: "No information"}
     },
     role: {type: String,enum: ['user', 'admin'], default: 'user'},
+    profile: {type: mongoose.Schema.Types.ObjectId, ref: 'Profiles', required: true},
     profileImage: {
         type: String,
         required: true,
         default: 'https://res.cloudinary.com/perfectevolution/image/upload/v1591579026/Default%20photoes/mpwnp3dco9kswjxfzaxp.jpg'
-    },
-    OldProfileImages: [{type: String}],
-    coverImage: {
-        coverPhoto: {type: String, required: true, default: "https://res.cloudinary.com/perfectevolution/image/upload/v1591579054/Default%20photoes/pq4xppdcrsjggq3eztj3.jpg"},
-        coverBaseColor: {type: Array, required: true, default: ["none"]}
-    },
-    SocialMedia: {
-        facebook: {type: String, required: false},
-        twitch: {type: String, required: false},
-        GitHub: {type: String, required: false},
-        Youtube: {type: String, required: false},
-        Instagram: {type: String, required: false}
-    },
-    Followers: [
-        {
-         type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true
-        }
-    ],
-    Photoes: [
-        {
-            type: String
-        }
-    ]
+    }
 })
 
 UserSchema.pre('save', function(next){
