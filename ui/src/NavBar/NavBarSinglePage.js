@@ -3,17 +3,17 @@ import './navbarStart.css';
 
 function NavBarSinglePage() {
    return (
-      <div className="NavBarSinglePage_container">
+      <header className="NavBarSinglePage_container">
          <button>
-            M
+            o
          </button>
          <button>
-            N
+            o
          </button>
          <button className="NavBarSinglePage_button">
-            {"<="}BACK
+            o
          </button>
-      </div>
+      </header>
    )
 }
 

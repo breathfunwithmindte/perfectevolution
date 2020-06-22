@@ -16,23 +16,24 @@
 
 .NavBarSinglePage_container{
     position: fixed;
-    top: 1vh;
-    right: 1vw;
-    padding: 1vw;
+    top:0;
+    right: 0;
+    width: 23%;
     display: flex;
-    background-color: #333;
-    border-radius: 1vw;
-}
-.NavBarSinglePage_button{
-    background-color: goldenrod;
-    border-style: none;
-    border-radius: 50%;
-    padding: 0.3vw;
-    color: white;
-    font-size: 1vw;
-    letter-spacing: 0.5vw;
-}
-.NavBarSinglePage_button:hover{
-    background-color: green;
+    background-color: rgba(51, 51, 51, 0.61);
+    justify-content: flex-end;
+    height: 50px;
 }
 
+
+.NavBarSinglePage_container button{
+    border-radius: 50%;
+    padding: 0.538rem;
+    margin: 0.5rem 0.8rem;
+    background-color: #0079bf;
+    border: none;
+}
+
+.NavBarSinglePage_container button:focus{
+    outline: none;
+}

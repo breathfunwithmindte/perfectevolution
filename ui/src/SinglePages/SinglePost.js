@@ -17,6 +17,8 @@ function SinglePost(props) {
    const { theme } = React.useContext( themeContext );
    const [profile, setProfile] = React.useState({});
 
+   const likes = 43;
+
    const id = props.match.params.id
 
    React.useEffect(() => {
@@ -55,9 +57,7 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
   else if(theme === undefined) {
       return (
          <div>
-            <header>
-              <NavBarSinglePage />
-            </header>
+            <NavBarSinglePage />
             <div className="singlePost_post">
                {singlePost === undefined ? null :
                <SinglePostContent post={singlePost} />}
@@ -70,7 +70,7 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
                   Comments will be here
                </div>
                <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
+                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
                </div>
             </div>
          </div>
@@ -94,7 +94,7 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
                   Comments will be here
                </div>
                <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
+                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
                </div>
             </div>
          </div>
@@ -103,24 +103,36 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
    else if(theme === "light") {
       return (
          <div className="SinglePost_Container__LIGHT">
-            <header>
-               <NavBarSinglePage />
-            </header>
-            <div className="singlePost_post">
-               {singlePost === undefined ? null :
-               <SinglePostContent post={singlePost} />}
-            </div>
-            <div>
-               <div>
-                  title place
-               </div>
-               <div>
-                  Comments will be here
-               </div>
-               <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
-               </div>
-            </div>
+            <main>
+               <section className="singlePost_title">
+                  <img src={""} alt="profile"/>
+                  <div>
+                     <span>LK</span>
+                     <span>DL</span>
+                     <span>({likes})</span>
+                  </div>
+                  <p>{Date.now()}</p>
+               </section>
+
+               
+               <section className="singlePost_body">
+                  adfjgkadfgkjadfbgakd<br/>
+                  adfjgkadfgkjadfbgakd<br/>
+                  adfjgkadfgkjadfbgakd<br/>
+                  adfjgkadfgkjadfbgakd<br/>
+                  adfjgkadfgkjadfbgakd<br/>
+                  adfjgkadfgkjadfbgakd<br/>
+                  adfjgkadfgkjadfbgakd<br/>
+               </section>
+            </main>
+
+            <aside>
+               <NavBarSinglePage/>
+
+               <section className="singlePost_comments">
+                  
+               </section>   
+            </aside>
          </div>
       )
    }
@@ -142,7 +154,7 @@ if(singlePost === undefined) return <LinearProgress color="secondary" />
                   Comments will be here
                </div>
                <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
+                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
                </div>
             </div>
          </div>
