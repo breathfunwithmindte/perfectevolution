@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
-
 
 const LikeDisPSchema = new mongoose.Schema({
    auth: {type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true},

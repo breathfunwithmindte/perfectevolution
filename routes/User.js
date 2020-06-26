@@ -83,6 +83,7 @@ userRouter.post('/register', async (req,res)=>{
                 let saveMongoDbuser = await newMongoDBuser.save();
                 let newProfile = await Profile({user: saveMongoDbuser._id, username: saveMongoDbuser.username});
                 let saveProfileUser = await newProfile.save()
+                let updateUserOperation = await User.updateOne({"_id": newMongoDBuser._id}, {$set: {"profile": saveProfileUser._id}})
                 let sendEmail = await transporter.sendMail({
                     from: "perfectevolution.site@gmail.com",
                     to: `${email}`,
@@ -134,8 +135,8 @@ userRouter.get('/admin',passport.authenticate('jwt',{session : false}),(req,res)
 });
 
 userRouter.get('/authenticated',passport.authenticate('jwt',{session : false}),(req,res)=>{
-    const {username,_id, firstName, firstTime, firebase_uid, email, profileImage, profile} = req.user;
-    res.status(200).json({isAuthenticated : true, user : {username, _id, firstName, firstTime, firebase_uid, email, profileImage, profile}});
+    const {username,_id, firstName, firstTime, firebase_uid, email, profileImage, profile, messenger} = req.user;
+    res.status(200).json({isAuthenticated : true, user : {username, _id, firstName, firstTime, firebase_uid, email, profileImage, profile, messenger}});
 });
 
 

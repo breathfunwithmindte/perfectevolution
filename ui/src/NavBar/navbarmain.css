@@ -1,0 +1,83 @@
+.messenger_navbar_container
+{
+    width: 100%;
+    height: 3.4vh;
+    position: fixed;
+    background-color: #333;
+    box-shadow: 1px 1px 5px 1px black;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: white;
+    z-index: 14;
+}
+
+
+/* !__ ===>>> ~~~~~~~~~~~~~~ S I N G L E   P A G E ~~~~~~~~~~~~~~ <<<=== __! */
+
+.NavBarSinglePage_container{
+    position: fixed;
+    top:0;
+    right: 0;
+    width: 34%;
+    display: flex;
+    background-color: rgba(250, 249, 249, 0.31);
+    justify-content: space-around;
+    height: 50px;
+}
+
+
+.NavBarSinglePage_container button{
+    border-radius: 50%;
+    padding: 0.538rem;
+    margin: 0.5rem 0.8rem;
+    background-color: #0079bf;
+    color: white;
+    border: none;
+}
+
+.NavBarSinglePage_container button:focus{
+    outline: none;
+}
+
+
+@media(max-width: 625px){
+    .NavBarSinglePage_container{
+        width: 99vw;
+    }
+}
+
+/* !__ ===>>> ~~~~~~~~~~~~~~ P R O D U C T   P A G E ~~~~~~~~~~~~~~ <<<=== __! */
+.productPage{
+    display: flex;  
+    padding: 0 3rem; 
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3a3939;
+    height: 80px;
+}
+
+
+.productPage #logo{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white
+}
+
+.productPage ul{
+    display: flex;
+    list-style: none;
+    flex-direction: row-reverse;
+}
+
+.productPage ul li{
+    font-size: 150%;
+    color: white;
+    padding: 0.2rem 1rem;  
+}
+
+.productPage ul li:nth-child(2){
+    padding: 0.2rem 2rem 0.2rem 1rem;
+    border-right: 1px solid white;
+}

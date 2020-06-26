@@ -25,6 +25,8 @@ const UserSchema = new mongoose.Schema({
     
     firebase_uid: {type: String, required: true},
 
+    messenger: [{type: String, required: false}],
+
     firstTime: {type: Boolean, required: true, default: true},
 
     LoveCoins: {type: Number, required: true, default: 1},
@@ -47,7 +49,7 @@ const UserSchema = new mongoose.Schema({
         MainChampion: {type: String, required: true, default: "No information"}
     },
     role: {type: String,enum: ['user', 'admin'], default: 'user'},
-    profile: {type: mongoose.Schema.Types.ObjectId, ref: 'Profiles', required: true},
+    profile: {type: mongoose.Schema.Types.ObjectId, ref: 'Profiles', required: false},
     profileImage: {
         type: String,
         required: true,

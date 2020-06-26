@@ -6,20 +6,15 @@ import { AuthContext } from '../Context/AuthContext';
 import { themeContext } from '../Context/ThemeContext';
 import HomeHeader  from './HomeComponents/HomeHeader';
 import {useHistory} from 'react-router-dom';
-import {Posts, Selfies, AskQuestions, Girls, Premade} from './ExportsFolder';
 import { TiWorld } from 'react-icons/ti'
 import { FcGallery, FcIdea, FcOnlineSupport} from 'react-icons/fc'
-import GlobalMessenger from '../Messenger/GlobalMessenger';
 const UsersPlace = React.lazy(() => import("./HomeComponents/UsersPlace"))
 
-function Home(props) {
+function Notifications(props) {
     const { user } = React.useContext( AuthContext );
     const { theme } = React.useContext( themeContext );
 
-    let pageRender = props.match.params.pageRender;
-    console.log(pageRender)
-
-    useDocumentTitle(`HaveFun ${user.firstName}`);
+    useDocumentTitle(`Notifications - PerfecTEvolutioN`);
     const History = useHistory();
 
 
@@ -53,16 +48,9 @@ function Home(props) {
                     </button>
                 </div>
                     <UsersPlace />
-                <div style={{marginLeft: "20vw", paddingLeft: "2vw", paddingRight: '2vw', width: "50vw",             minHeight: "50%"}}>
-                    {
-                        pageRender === "Posts" ? <Posts /> : 
-                        pageRender === "Selfies" ? <Selfies /> :
-                        pageRender === "AskQuestions" ? <AskQuestions /> :
-    
-                        <h3>nothing was found</h3>
-                    }
-                </div>
-                <GlobalMessenger />
+                    <div style={{background: "#202020", marginLeft: "20vw", paddingLeft: "2vw", paddingRight: '2vw', width: "50vw", minHeight: "50%"}}>
+                         <p>here will be notifications</p>
+                 </div>
             </div>
 )
 else if(theme==="light")
@@ -96,15 +84,9 @@ else if(theme==="light")
                 </button>
             </div>
             <UsersPlace />
-            <div style={{marginLeft: "20vw", paddingLeft: "2vw", paddingRight: '2vw', width: "50vw", minHeight: "50%"}}>
-                {
-                    pageRender === "Posts" ? <Posts /> : 
-                    pageRender === "Selfies" ? <Selfies /> :
-                    pageRender === "AskQuestions" ? <AskQuestions /> :
-                    <h3>nothing was found</h3>
-                }
+            <div style={{background: "#202020", marginLeft: "20vw", paddingLeft: "2vw", paddingRight: '2vw', width: "50vw", minHeight: "50%"}}>
+               <p>here will be notifications</p>
             </div>
-            <GlobalMessenger />
         </div>
     );
     else if(theme==="black")
@@ -138,15 +120,9 @@ else if(theme==="light")
                 </button>
             </div>
             <UsersPlace />
-            <div style={{marginLeft: "20vw", paddingLeft: "2vw", paddingRight: '2vw', width: "50vw", minHeight: "50%"}}>
-                {
-                    pageRender === "Posts" ? <Posts /> : 
-                    pageRender === "Selfies" ? <Selfies /> :
-                    pageRender === "AskQuestions" ? <AskQuestions /> :
-                    <h3>nothing was found</h3>
-                }
+            <div style={{background: "#202020", marginLeft: "20vw", paddingLeft: "2vw", paddingRight: '2vw', width: "50vw", minHeight: "50%"}}>
+               <p>here will be notifications</p>
             </div>
-            <GlobalMessenger />
         </div>
     );
     else if(theme===undefined)
@@ -184,17 +160,12 @@ else if(theme==="light")
             </div>
             <UsersPlace />
             <div style={{background: "#202020", marginLeft: "20vw", paddingLeft: "2vw", paddingRight: '2vw', width: "50vw", minHeight: "50%"}}>
-                {
-                    pageRender === "Posts" ? <Posts /> : 
-                    pageRender === "Selfies" ? <Selfies /> :
-                    pageRender === "AskQuestions" ? <AskQuestions /> :
-                    <h3>nothing was found</h3>
-                }
+               <p>here will be notifications</p>
             </div>
-            <GlobalMessenger />
         </div>
     );
 
 }
 
-export default Home;
+export default Notifications
+;

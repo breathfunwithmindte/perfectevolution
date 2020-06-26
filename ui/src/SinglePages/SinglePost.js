@@ -3,21 +3,24 @@ import "./singlepage.css";
 import socket from '../socket';
 import { AuthContext } from '../Context/AuthContext';
 import { themeContext } from '../Context/ThemeContext';
-import { CommentsP } from '../Pages/ExportsFolder';
 import NavBarSinglePage from '../NavBar/NavBarSinglePage';
 import CreateComment from './CreateComment';
 import SinglePostContent from './SinglePostContent';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import CommentsP from '../Comments/CommentsP/CommentsP';
+import { LikeDis } from '../Comments/ExportFolder'
+import { FcLike, FcLikePlaceholder} from 'react-icons/fc'
 
 
 function SinglePost(props) {
-   const [singlePost, setSinglePost] = React.useState();
+   const [singlePost, setSinglePost] = React.useState(undefined);
    const [loading, setLoading] = React.useState(true);
    const { user } = React.useContext( AuthContext );
    const { theme } = React.useContext( themeContext );
    const [profile, setProfile] = React.useState({});
 
-   const id = props.match.params.id
+   const id = props.match.params.id;
+   console.log("singlepost ===>>>",singlePost)
 
    React.useEffect(() => {
       async function Initialisation() {
@@ -49,106 +52,191 @@ function SinglePost(props) {
          }
       }
       getProfile_forSinglePost();
-   })
+   },[id])
 
 if(singlePost === undefined) return <LinearProgress color="secondary" />
   else if(theme === undefined) {
       return (
-         <div>
-            <header>
-              <NavBarSinglePage />
-            </header>
-            <div className="singlePost_post">
-               {singlePost === undefined ? null :
-               <SinglePostContent post={singlePost} />}
-            </div>
-            <div>
+         <div className="SinglePost_Container__DARK">
+         <main>
+            <section className="singlePost_title__DARK">
+              <img src={singlePost.auth.profileImage} alt="" style={{ width: "34px", height: "34px", borderRadius: "50%"}} />
+      
+       <p>{singlePost.auth.username}</p>         <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
+                  {
+                     singlePost.Love.find(d=>d._id === user._id) ? <FcLike data-toggle="tooltip"
+                     title="You already loved this post" style={{fontSize: "34px", color: "red"}} /> 
+                     :
+                     <FcLikePlaceholder style={{fontSize: "34px", color: "white"}} data-toggle="tooltip" title="Love this post?" onClick={async () => {
+                        try{
+                           let ReqServer = await socket.emit("love_post", {postID: singlePost._id, authID: user._id})
+                        }catch(err){
+                           //console.log(err)
+                           alert("smth went wrong refresh the page !!")
+                        }
+                     }}/>
+                  }
+                  <LikeDis postID={singlePost._id} Writter={singlePost.auth._id} authID={user._id} profile={profile}/>
+               </div>
+               <p>{Date.now()}</p>
+            </section>
+
+            
+            <section className="singlePost_body__DARK">
+                <div dangerouslySetInnerHTML={{ __html: singlePost.content }} />
+
+            </section>
+         </main>
+
+         <aside>
+            <NavBarSinglePage user={user}/>
+
+            <section className="singlePost_comments">
                <div>
-                  title place
+                 <CommentsP style={{overflowY:"scroll"}} postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
                </div>
-               <div>
-                  Comments will be here
-               </div>
-               <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
-               </div>
-            </div>
-         </div>
+               <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
+            </section>   
+         </aside>
+      </div>
       )
    }
    else if(theme === "dark") {
       return (
          <div className="SinglePost_Container__DARK">
-            <header>
-               <NavBarSinglePage />
-            </header>
-            <div className="singlePost_post">
-               {singlePost === undefined ? null :
-               <SinglePostContent post={singlePost} />}
-            </div>
-            <div>
+         <main>
+            <section className="singlePost_title__DARK">
+              <img src={singlePost.auth.profileImage} alt="" style={{ width: "34px", height: "34px", borderRadius: "50%"}} />
+      
+       <p>{singlePost.auth.username}</p> <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
+       {
+          singlePost.Love.find(d=>d._id === user._id) ? <FcLike data-toggle="tooltip"
+          title="You already loved this post" style={{fontSize: "34px", color: "red"}} /> 
+          :
+           <FcLikePlaceholder style={{fontSize: "34px", color: "white"}} data-toggle="tooltip" title="Love this post?" onClick={async () => {
+              try{
+               let ReqServer = await socket.emit("love_post", {postID: singlePost._id, authID: user._id})
+              }catch(err){
+                 //console.log(err)
+                 alert("smth went wrong refresh the page !!")
+              }
+          }}/>
+       }
+       <LikeDis postID={singlePost._id} Writter={singlePost.auth._id} authID={user._id} profile={profile}/>
+    </div>
+               <p>{Date.now()}</p>
+            </section>
+
+            
+            <section className="singlePost_body__DARK">
+               <div dangerouslySetInnerHTML={{ __html: singlePost.content }} />
+            </section>
+         </main>
+
+         <aside>
+            <NavBarSinglePage user={user}/>
+
+            <section className="singlePost_comments">
                <div>
-                  title place
+                 <CommentsP style={{overflowY:"scroll"}} postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
                </div>
-               <div>
-                  Comments will be here
-               </div>
-               <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
-               </div>
-            </div>
-         </div>
+               <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
+            </section>   
+         </aside>
+      </div>
       )
    }
    else if(theme === "light") {
       return (
          <div className="SinglePost_Container__LIGHT">
-            <header>
-               <NavBarSinglePage />
-            </header>
-            <div className="singlePost_post">
-               {singlePost === undefined ? null :
-               <SinglePostContent post={singlePost} />}
-            </div>
-            <div>
-               <div>
-                  title place
+            <main>
+               <section className="singlePost_title__LIGHT">
+                 <img src={singlePost.auth.profileImage} alt="" style={{ width: "34px", height: "34px", borderRadius: "50%"}} />
+                  <p style={{color: "black", marginLeft: "-4vw"}}>{singlePost.auth.username}</p>
+                 <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
+                  {
+                     singlePost.Love.find(d=>d._id === user._id) ? <FcLike data-toggle="tooltip"
+                     title="You already loved this post" style={{fontSize: "34px", color: "red"}} /> 
+                     :
+                     <FcLikePlaceholder style={{fontSize: "34px", color: "white"}} data-toggle="tooltip" title="Love this post?" onClick={async () => {
+                        try{
+                           let ReqServer = await socket.emit("love_post", {postID: singlePost._id, authID: user._id})
+                        }catch(err){
+                           //console.log(err)
+                           alert("smth went wrong refresh the page !!")
+                        }
+                     }}/>
+                  }
+                  <LikeDis postID={singlePost._id} Writter={singlePost.auth._id} authID={user._id} profile={profile}/>
                </div>
-               <div>
-                  Comments will be here
-               </div>
-               <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
-               </div>
-            </div>
+                  <p>{Date.now()}</p>
+               </section>
+
+               
+               <section className="singlePost_body__LIGHT">
+                <div dangerouslySetInnerHTML={{ __html: singlePost.content }} />
+               </section>
+            </main>
+
+            <aside>
+               <NavBarSinglePage user={user}/>
+
+               <section className="singlePost_comments">
+                  <div>
+                    <CommentsP style={{overflowY:"scroll"}} postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
+                  </div>
+                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
+               </section>   
+            </aside>
          </div>
       )
    }
    else if(theme === "black") {
       return (
          <div className="SinglePost_Container__BLACK">
-            <header>
-                <NavBarSinglePage />
-            </header>
-            <div className="singlePost_post">
-               {singlePost === undefined ? null :
-               <SinglePostContent post={singlePost} />}
-            </div>
-            <div>
-               <div>
-                  title place
+            <main>
+               <section className="singlePost_title__BLACK">
+                 <img src={singlePost.auth.profileImage} alt="" style={{ width: "34px", height: "34px", borderRadius: "50%"}} />
+                  <p>{singlePost.auth.username}</p>
+                 <div style={{display: "flex", justifyContent: "space-evenly", alignItems: "center"}}>
+                  {
+                     singlePost.Love.find(d=>d._id === user._id) ? <FcLike data-toggle="tooltip"
+                     title="You already loved this post" style={{fontSize: "34px", color: "red"}} /> 
+                     :
+                     <FcLikePlaceholder style={{fontSize: "34px", color: "white"}} data-toggle="tooltip" title="Love this post?" onClick={async () => {
+                        try{
+                           let ReqServer = await socket.emit("love_post", {postID: singlePost._id, authID: user._id})
+                        }catch(err){
+                           //console.log(err)
+                           alert("smth went wrong refresh the page !!")
+                        }
+                     }}/>
+                  }
+                  <LikeDis postID={singlePost._id} Writter={singlePost.auth._id} authID={user._id} profile={profile}/>
                </div>
-               <div>
-                  Comments will be here
-               </div>
-               <div className="create_comment_forPost">
-                  <CreateComment postID={singlePost._id} Writter={singlePost.auth} user_firstname={user.firstName} userID={user._id} profile={user.profile}/>
-               </div>
-            </div>
+                  <p>{Date.now()}</p>
+               </section>
+
+               
+               <section className="singlePost_body__BLACK">
+                 <div dangerouslySetInnerHTML={{ __html: singlePost.content }} />
+               </section>
+            </main>
+
+            <aside>
+               <NavBarSinglePage user={user}/>
+
+               <section className="singlePost_comments">
+                  <div>
+                    <CommentsP style={{overflowY:"scroll"}} postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
+                  </div>
+                  <CreateComment postID={singlePost._id} Writter={singlePost.auth._id} user_firstname={user.firstName} authID={user._id} profile={user.profile}/>
+               </section>   
+            </aside>
          </div>
       )
    }
 
 }
 
-export default SinglePost
+export default React.memo(SinglePost);

@@ -1,19 +1,27 @@
 import React from 'react';
-import './navbarStart.css';
+import './navbarmain.css';
+import { useHistory } from 'react-router-dom';
 
-function NavBarSinglePage() {
+function NavBarSinglePage({user}) {
+   const History = useHistory();
    return (
-      <div className="NavBarSinglePage_container">
-         <button>
-            M
-         </button>
-         <button>
-            N
-         </button>
-         <button className="NavBarSinglePage_button">
-            {"<="}BACK
-         </button>
-      </div>
+      <header className="NavBarSinglePage_container">
+      <button onClick={() => History.push(`/${user.firstName}'s_App/Posts`)}>
+         Home
+      </button>
+      <button onClick={()=> History.push("/products")}>
+         Products
+      </button>
+      <button onClick={()=> History.push("/products")}>
+         Messenger
+      </button>
+      <button onClick={()=> History.push("/Notifications")}>
+         Notifications
+      </button>
+      <button onClick={()=> History.push(`/Profile/${user.username}`)}>
+         My Profile
+      </button>
+   </header>
    )
 }
 

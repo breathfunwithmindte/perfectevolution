@@ -1,35 +1,63 @@
-.profile_container{
+.profile_container__DARK{
     min-height: 100vh;
     padding: 0;
     background-color: #333;
 }
 
-.profile_header{
-    position: fixed;
-    max-width: 23vw;
-    height: 4vh;
-    background-color: aqua;
-    display: flex;
-    align-items: center;
-    right: 1vw;
-    top: 1vw;
+.profile_container__LIGHT{
+    min-height: 120vh;
+    padding: 0;
+    background-color: rgb(221, 240, 243);
 }
 
-.profile_details_container{
+.profile_Status_Place{
+    width: 92%;
+    margin-left: 4%;
+    padding: 1vw;
+}
+
+
+.profile_details_container__DARK{
     position: absolute;
     display: flex;
     flex-direction: column;
     justify-items: center;
     align-items: center;
     overflow: hidden;
-    background-color: #161616;
+    background-color: #141414;
+    color: white;
     min-height: 100vh;
-    width: 40vw;
+    font-size: 3vw;
+    width: 56vw;
+}
+.profile_details_container__LIGHT{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: rgb(221, 240, 243);
+    min-height: 100vh;
+    width: 56vw;
+}
+
+.profile_coverImage_settingsButton{
+    position: absolute;
+    z-index: 5;
+    left: 3vw;
+    font-size: 2.3vw;
+    color: rgb(0, 247, 255);
+    padding: 0.5vw;
+}
+.profile_coverImage_settingsButton:hover{
+    background: rgba(255, 255, 255, 0.5);
 }
 
 .profile_coverImage{
     width: 100%;
     height: auto;
+    box-shadow: 1px 1px 5px 1px black;
 }
 .profile_profileImage{
     margin-top: -100px;
@@ -43,12 +71,27 @@
 .profile_container_else{
     position: absolute;
     right: 1vw;
-    width: 56vw;
+    width: 34vw;
     padding-right: 1vw;
     padding-left: 1vw;
     height: 100vh;
     display: flex;
 }
+
+/* D I A L O G   FOR  P R O F I L E   I M A G E S   C H A N G E */
+
+.Dialog_ProfileImageSettings_container__DARK{
+    display: flex;
+    background-color: #151515;
+    color: white;
+}
+
+.Dialog_ProfileImageSettings_container__LIGHT{
+    display: flex;
+    background-color: white;
+    color: #333;
+}
+
 
 .profile_buttons{
     height: 5vh;
@@ -56,4 +99,56 @@
     border-style: none;
     margin-right: 1%;
     border-radius: 14px;
+}
+
+@media(max-width: 692px){
+    .profile_details_container__DARK{
+        position: relative;
+        font-size: 5vw;
+        min-height: 23vh;
+        width: 100vw;
+    }
+    .profile_details_container__LIGHT{
+        position: relative;
+        font-size: 5vw;
+        min-height: 23vh;
+        width: 100vw;
+    }
+    .profile_container_else{
+        position: relative;
+    }
+    .profile_profileImage{
+        width: 69px;
+        height: 69px;
+    }
+}
+
+
+.Profile_Global_container{
+    max-width: 23vw;
+    min-width: 392px;
+    max-height: 23vw;
+    min-height: 392px;
+    overflow: hidden;
+    background-color: aqua;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 23px;
+    letter-spacing: 3px;
+}
+
+.Profile_Global_coverImage{
+    min-width: 392px;
+    max-width: 100%;
+    height: auto;
+}
+
+.Profile_Global_profileImage{
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    padding: 0.4vw;
+    margin-top: -16%;
+    background-color: #333;
 }

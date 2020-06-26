@@ -48,6 +48,10 @@ const LikesP = require('./models/LikeDisP');
 const Profile = require("./models/Profile");
 const CommentsPost = require("./models/CommentsPost");
 
+//Messenger//
+
+const Messenger = require("./models/Messenger")
+
 //~~~~~~~~~~~~~~//||   "SOCKET.IO"   ||//~~~~~~~~~~~~~~//
 
 io.on('connection', (socket)=>{
@@ -76,6 +80,80 @@ io.on('connection', (socket)=>{
         }
     })
 
+//-~-~-~-~-~-~-~-~-~-~-~-~-~-~-USER CHATROOMS FOR CONTEXT-~-~-~-~-~-~-~-~-~-~-~-~-~-~-//
+
+    socket.on("mychatrooms", async ({authID}) => {
+        try{
+            let findUser_messengers = await User.findOne({"_id": authID}, {"messenger": 1})
+            let chatrooms = await Messenger.find({"messengerKEY": findUser_messengers.messenger}).populate("users", ["profileImage", "username", "firstName"])
+            socket.emit(`chatrooms_${authID}`, {chatrooms})
+        }catch(err){
+            console.log(err)
+        }
+    })
+
+                //~~~~~~~~~~~~~~<3<3~~~~~~~~~~~~~~xx~~~~~~~~~~~~~~//
+//~~~~~~~~~~~~~~//||     "Ώστε Έτσι?? Τώρα θά'θελες !!"         ||//~~~~~~~~~~~~~~//
+                //~~~~~~~~~~~~~~<3<3~~~~~~~~~~~~~~xx~~~~~~~~~~~~~~//
+
+    socket.on("initial_ChatRoom", async ({userID, authID, authUsername, userUsername}) => {
+        try{
+            //newChatRoom schema === here  ^^__^^
+            let check_IF_chatroom_exist = await Messenger.findOne({ $or: [ {"messengerKEY": [authUsername, userUsername].join("")}, {"messengerKEY": [userUsername, authUsername].join("")} ] });
+            console.log(check_IF_chatroom_exist)
+            if(check_IF_chatroom_exist === null) {
+                console.log("not exist")
+            let newChatRoom = new Messenger({users: [userID, authID], adminUser: authID, title: [userID, authID].join("") , messengerKEY: [authUsername, userUsername].join("") });
+            //chatRoom SAVE === here ^^__^^
+            let create__ChatRoom = await newChatRoom.save();
+
+            //users updates === here ^^__^^
+            let updateUserMessenger = await User.updateOne({"_id": userID}, {$addToSet: {"messenger": [authUsername, userUsername].join("")}});
+            let updateAuthMessenger = await User.updateOne({"_id": authID}, {$addToSet: {"messenger": [authUsername, userUsername].join("")}});
+
+            //find new user to send for MESSENGER CONTEXT === here ^^__^^
+            let findAuth_messengers = await User.findOne({"_id": authID}, {"messenger": 1});
+            let findUser_messengers = await User.findOne({"_id": userID}, {"messenger": 1});   
+            
+            //send smth for update AUTH CONTEXT === here ^^__^^
+
+            socket.emit(`update_AUTH_Context_${authID}`, {smth: true})
+
+            //find new user to send for MESSENGER CONTEXT === here ^^__^^
+            let authChatrooms = await Messenger.find({"key": findAuth_messengers.messenger}).populate("users", ["profileImage", "username", "firstName"]);
+            let userChatRooms = await Messenger.find({"key": findUser_messengers.messenger}).populate("users", ["profileImage", "username", "firstName"]);
+
+            //send found messenger to CONTEXT === here ^^__^^
+            socket.emit(`chatrooms_${authID}`, {chatrooms: authChatrooms});
+            socket.broadcast.emit(`chatrooms_${userID}`, {chatrooms: userChatRooms})
+            socket.emit(`initial_ChatRoom_Response`, {error: "noError", chatRoomkey: create__ChatRoom.messengerKEY})
+            } else {
+                console.log("exist", check_IF_chatroom_exist)
+                socket.emit(`initial_ChatRoom_Response`, {error: "noError", chatRoomkey: check_IF_chatroom_exist.messengerKEY})
+            }
+        }catch(err){
+            socket.emit(`initial_ChatRoom_Response`, {error: err})
+        }
+    })
+
+    socket.on("getChatRoom",  ({messengerKEY}) => {
+      Messenger.findOne({"messengerKEY": messengerKEY}).populate("users", ["profileImage", "username", "firstName"])
+      .then(data => socket.emit(`chatroom_${messengerKEY}`, {data})).catch(err=>console.log(err))
+    })
+
+    socket.on("send_message", async ({messengerKEY, newmsg, authID}) => {
+        try{
+            let pushMessengerToDatabase = await Messenger.updateOne({"messengerKEY": messengerKEY}, {$push: {
+                "messages": {message: newmsg, auth: authID}
+            }});
+            let updatedMessenger = await Messenger.findOne({"messengerKEY": messengerKEY}).populate("users", ["profileImage", "username", "firstName"]);
+            socket.emit(`chatroom_${messengerKEY}`, {data: updatedMessenger})
+            socket.broadcast.emit(`chatroom_${messengerKEY}`, {data: updatedMessenger})
+        }catch(err){
+            console.log(err)
+        }
+    })
+
 
 //-~-~-~-~-~-~-~-~-~-~-~-~-~-~-POSTS PLACE-~-~-~-~-~-~-~-~-~-~-~-~-~-~-//
     socket.on("create_Post", async ({content, authID, limit, profile}) => {
@@ -92,7 +170,7 @@ io.on('connection', (socket)=>{
          socket.emit("Posts", {posts: getAgainAll})
         }catch(err){
             socket.emit("ServerAnswer", {error: "smth went wrong"})
-            console.log(err)
+            //console.log(err)
         }
     })
 
@@ -131,6 +209,7 @@ io.on('connection', (socket)=>{
 
     socket.on("create_like", async({postID, Writter, type, authID, profile}) => {
         try{
+            console.log(postID, Writter, type, authID, profile)
             let like = new LikesP({auth: authID, post: postID, type, authProfile: profile});
             let SaveOperation = await like.save();
             let FindAgain = await LikesP.findOne({"post": postID, "auth": authID});
@@ -168,7 +247,7 @@ io.on('connection', (socket)=>{
 
     socket.on("single_post", async ({id}) => {
         try{
-            let getPost = await Post.findOne({"_id": id}).populate("auth", ["firstname", "profileImage"]).populate("Love", ["firstname", "profileImage"])
+            let getPost = await Post.findOne({"_id": id}).populate("auth", ["username", "profileImage"]).populate("Love", ["username", "profileImage"])
             socket.emit("get_signlePost", {post: getPost});
         }catch(err){
             socket.emit("Posts", {error: err})
@@ -178,16 +257,32 @@ io.on('connection', (socket)=>{
 
     socket.on("create_commentP", async ({postID, authID, profile, content, Writter}) => {
         try{
-            let newComment = new CommentsPost({post: postID, auth: authID, authProfile: profile, content, Writter});
+            let newComment = new CommentsPost({post: postID, auth: authID, authProfile: profile, content, writter: Writter});
             let createComment = await newComment.save();
-            let find_again_comments = await CommentsPost.find({"post": postID});
-            socket.emit(`all_commentsPost_for_${postID}`, {commentsPost: find_again_comments});
+            let find_again_comments = await CommentsPost.find({"post": postID})
+            .populate("authProfile")
+            .populate("auth", ["username", "profileImage"]);
+            socket.emit(`all_commentsPost_for_${postID}`, {commentSERVER: find_again_comments, error: "no error"});
 
         }catch(err){
-            //console.log(err)
-            socket.emit(`all_commentsPost_for_${postID}`)
+            console.log(err)
+            socket.emit(`all_commentsPost_for_${postID}`, {error: "smth went wrong"})
         }
     })
+
+    socket.on("getComments", async ({postID}) => {
+        try{
+            let findComments_operation = await CommentsPost.find({"post": postID})
+            .populate("authProfile")
+            .populate("auth", ["username", "profileImage"]);
+            socket.emit(`all_commentsPost_for_${postID}`, {commentSERVER: findComments_operation, error: "no error"})
+        }catch(err){
+            //console.log(err);
+            socket.emit(`all_commentsPost_for_${postID}`, {error: "smth went wrong"})
+        }
+    })
+
+
 
    
 
@@ -210,6 +305,55 @@ io.on('connection', (socket)=>{
             socket.emit(`profile_response_forUser_${userID}`, {error: "smth went wrong"})
         }
     })
+
+
+    //-~-~-~-~-~-~-~-~-~-~-~-~-~-~-PROFILE USER-~-~-~-~-~-~-~-~-~-~-~-~-~-~-//
+        socket.on("getUsers_forPAGE", () => {
+            User.find({}).then(users => {
+                socket.emit("all_Users_PAGE", {users, err: "noError"})
+            }).catch(err => {
+                //console.log(err);
+            })
+        })
+    //-~-~-~-~-~-~-~-~-~-~-~-~-~-~-UPADTE PROFILE-~-~-~-~-~-~-~-~-~-~-~-~-~-~-//
+        socket.on("update_profilePhoto", async ({profileImage, authID, profile}) => {
+            try{
+            let updateOperation = await User.updateOne({"_id": authID}, {$set: {"profileImage": profileImage}});
+            let updateProfileOeration = await Profile.updateOne({"_id": profile}, {
+                $set: {"profileImage": profileImage},
+                $addToSet: {"profileImages": profileImage}
+            })
+            let findUpdatedProfile = await Profile.findOne({"_id": profile});
+            socket.emit(`profile_response_forUser_${authID}`, {profile: findUpdatedProfile})
+            socket.broadcast.emit(`profile_response_forUser_${authID}`, {profile: findUpdatedProfile});
+            socket.emit(`profile_response_${findUpdatedProfile.username}`, {profileServ: findUpdatedProfile});
+            socket.broadcast.emit(`profile_response_${findUpdatedProfile.username}`, {profileServ: findUpdatedProfile});
+        }catch(err){ console.log(err) }
+        })
+
+        socket.on("update_coverPhoto", async ({coverImage, profile}) => {
+            try{
+                let updateOperation = await Profile.updateOne({"_id": profile}, {$set: {"coverImage": coverImage}});
+                let findUpdatedProfile = await Profile.findOne({"_id": profile});
+                socket.emit(`profile_response_forUser_${authID}`, {profile: findUpdatedProfile})
+                socket.broadcast.emit(`profile_response_forUser_${authID}`, {profile: findUpdatedProfile});
+                socket.emit(`profile_response_${findUpdatedProfile.username}`, {profileServ: findUpdatedProfile});
+                socket.broadcast.emit(`profile_response_${findUpdatedProfile.username}`, {profileServ: findUpdatedProfile});
+            }catch(err){console.log(err)}
+        })
+
+        socket.on("update_profileStatus", async ({ profile, content }) =>{
+            try{
+                let updateOperation = await Profile.updateOne({"_id": profile._id}, {$set: {"statusContent": content}});
+                let findUpdatedProfile = await Profile.findOne({"_id": profile._id});
+                socket.emit(`profile_response_forUser_${profile.user}`, {profile: findUpdatedProfile})
+                socket.broadcast.emit(`profile_response_forUser_${profile.user}`, {profile: findUpdatedProfile});
+                socket.emit(`profile_response_${findUpdatedProfile.username}`, {profileServ: findUpdatedProfile});
+                socket.broadcast.emit(`profile_response_${findUpdatedProfile.username}`, {profileServ: findUpdatedProfile});
+            }catch(err){
+                console.log(err)
+            }
+        })
 
 
     socket.on('disconnect', ()=>{

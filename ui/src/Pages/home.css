@@ -1,22 +1,30 @@
 .Home_container__DARK{
    width: 100vw;
+   min-height: 100vh;
    height: fit-content;
    background-color: #141414;
+   color: white;
 }
 .Home_container__LIGHT{
    width: 100vw;
+   min-height: 100vh;
    height: fit-content;
    background-color: rgb(189, 240, 255);
+   color: black;
 }
 .Home_container__BLACK{
    width: 100vw;
+   min-height: 100vh;
    height: fit-content;
    background-image: url(https://i.gifer.com/UuyT.gif);
+   color: rgb(50, 211, 50);
 }
 .Home_container__UNDEFINED{
    width: 100vw;
+   min-height: 100vh;
    height: fit-content;
    background-color: rgb(189, 240, 255);
+   color: black;
 }
 
 
@@ -115,11 +123,23 @@
    border-color: red;
 }
 
+/* USERS FOR PAGES */
+.Container_users_forPages{
+   background: rgba(0, 0, 0, 0.3);
+   position: fixed;
+   right: 5vw;
+   top: 3vh;
+   width: 20vw;
+   height: 23vh;
+   padding: 1vw;
+}
 
 
 
 @media(max-width: 823px){
-
+   .Container_users_forPages{
+      display: none;
+   }
 }
 
 @media(max-width: 639px){
@@ -135,3 +155,5 @@
          overflow: hidden;
    }
 }
+
+

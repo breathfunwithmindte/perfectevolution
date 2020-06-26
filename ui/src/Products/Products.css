@@ -1,0 +1,14 @@
+.products_wrapper{
+    display: flex;
+}
+
+.products_wrapper aside{
+    color: white;
+    padding: 0 0.8rem 0 3rem; 
+    height: calc(100vh - 80px);
+    overflow-y: scroll;
+}
+
+.products_wrapper main{
+    color: white;
+}

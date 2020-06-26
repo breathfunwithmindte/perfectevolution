@@ -93,6 +93,7 @@ class VideoBlot extends BlockEmbed {
             videoTag.setAttribute('src', value.src);
             videoTag.setAttribute('title', value.title);
             videoTag.setAttribute('width', '100%');
+            videoTag.setAttribute('height', '600px');
             videoTag.setAttribute('controls', '');
 
             return videoTag;
