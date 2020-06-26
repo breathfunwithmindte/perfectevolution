@@ -1,0 +1,151 @@
+
+.messenger_container__LIGHT
+{
+    background-color: #b7e1fa;
+    height: 99vh;
+    padding: 1.6vw;
+    color: black;
+}
+.messenger_container__DARK
+{
+    background-color: #151515;
+    height: 99vh;
+    padding: 1.6vw;
+    color: whitesmoke;
+}
+.messenger_container__BLACK
+{
+    background-color: #000000;
+    height: 99vh;
+    padding: 1.6vw;
+    color: greenyellow;
+}
+
+.messenger_chatrooms_container{
+    z-index: 3;
+    position: fixed;
+    width: 5vw;
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    top: 4vh;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 92vh;
+    max-height: 99vh;
+    padding-top: 4vh;
+    align-items: center;
+}
+
+.messenger_chatrooms_images_whenLoading{
+    border-radius: 50%;
+    width: 4vw;
+    height: 4vw;
+    background: rgba(0,0,0,0.9);
+    border-style: groove;
+    border-width: 0.3vw;
+    border-color: hotpink;
+}
+
+.messenger_changetype_button{
+    font-size: 9px;
+    border-style: none;
+    box-shadow: 1px 1px 5px 1px black;
+    background-color: rgb(24, 204, 24);
+    border-radius: 5%;
+    color: white;
+}
+
+.messenger_settings_container
+{
+    background: rgba(0,0,0,0.9);
+    position: fixed;
+    width: 23vw;
+    height: 92vh;
+    right: 1vw;
+    top: 4vh;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 3;
+    overflow: hidden;
+    padding: 1.4vw;
+}
+
+.ChatBox_container
+{
+    width: 56vw;
+    margin-left: 9vw;
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 3vh;
+}
+.ChatBox_imput_messenger{
+    position: fixed;
+    bottom: 1vh;
+    width: 56vw;
+    background-color: #333;
+}
+
+.messenger_photo_design{
+    position: absolute;
+    border-style: dashed;
+    min-width: auto;
+    min-height: auto;
+    max-width: 100%;
+    max-height: 56%;
+    margin-top: 14%;
+    margin-left: -1%;
+    filter:  grayscale(2) brightness(2);
+    transform: skew(-4deg) skewX(-1deg) skewY(16deg);
+    box-shadow: 1px 14px 23px 3px black; 
+    z-index: 2222;
+}
+
+.messenger_laneWithstyle{
+    position: absolute;
+    width: 92%;
+    font-size: 1.4vw;
+    color: rgb(104, 101, 101);
+    text-align: center;
+    left: 0.5vw;
+    z-index: 1;
+    bottom: 1%;
+    font-weight: bold;
+    letter-spacing: 0.5vw;
+
+}
+
+.messenger_Global_chatrooms_container{
+    position: fixed;
+    right: 0.3vw;
+    top: 0.5vh;
+    height: 99vh;
+    min-width: 34px;
+    max-width: 5vw;
+}
+
+.messenger_global_nana{
+    width: 16vw;
+    height: 34vh;
+    position: fixed;
+    background: rgba(255, 255, 255, 0.5);
+    right: 5vw;
+    bottom: 1vh;
+}
+
+
+
+
+@media(max-width: 525px){
+    .messenger_settings_container{
+        display: none;
+    }
+    .ChatBox_container{
+        min-width: 392px;
+        max-width: 92vw;
+    }
+    .ChatBox_imput_messenger{
+        min-width: 392px;
+        max-width: 92vw;
+    }
+}

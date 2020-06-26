@@ -1,0 +1,23 @@
+.SinglePage_postComment_SingleComment{
+    background: rgba(255, 255, 255, 0.3);
+    width: 92%;
+    margin-left: 4%;
+    min-height: 3.4vh;
+    border-radius: 1vw;
+    padding: 0.5vw;
+    margin: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.SinglePage_postComments_singleComment_content
+{
+    background: rgba(255, 255, 255, 0.7);
+    width: 92%;
+    border-radius: 1vw;
+    padding-left: 1vw;
+}
+
+.SinglePage_postComment_SingleComment{
+    background-color: aqua;
+}
